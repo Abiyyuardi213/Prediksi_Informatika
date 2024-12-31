@@ -1,0 +1,36 @@
+{
+    "data": [
+        {
+            "year": 2019,
+            "students": 200
+        },
+        {
+            "year": 2020,
+            "students": 220
+        },
+        {
+            "year": 2021,
+            "students": 240
+        },
+        {
+            "year": 2022,
+            "students": 260
+        },
+        {
+            "year": 2023,
+            "students": 280
+        },
+        {
+            "year": 2020,
+            "students": 200
+        },
+        {
+            "year": 2021,
+            "students": 180
+        },
+        {
+            "year": 2023,
+            "students": 360
+        }
+    ]
+}
