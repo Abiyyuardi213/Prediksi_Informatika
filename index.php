@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $year = intval($_POST['year']);
         $students = intval($_POST['students']);
         $dataset->addData($year, $students);
+        $dataset->saveData(); // Ensure data is saved after adding new data
     } elseif (isset($_POST['calculate_regression'])) {
         $year = intval($_POST['year']);
         $predicted = $dataset->predict($year + 1);
@@ -75,12 +76,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($dataset->getData() as $entry): ?>
+                            <?php if (!empty($dataset->years) && !empty($dataset->students)): ?>
+                                <?php foreach ($dataset->getData() as $entry): ?>
+                                    <tr>
+                                        <td class="border px-4 py-2"><?= $entry['year'] ?></td>
+                                        <td class="border px-4 py-2"><?= $entry['students'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
                                 <tr>
-                                    <td class="border px-4 py-2"><?= $entry['year'] ?></td>
-                                    <td class="border px-4 py-2"><?= $entry['students'] ?></td>
+                                    <td colspan="2" class="border px-4 py-2 text-center">Data tidak tersedia.</td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
 
@@ -127,7 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endif; ?>
                         <div class="mt-8">
                             <h3 class="text-lg font-semibold text-gray-700 mb-2">Grafik Perkiraan Pendaftaran Mahasiswa</h3>
-                            <canvas id="predictionChart" width="400" height="200"></canvas>
+                            <?php if (!empty($dataset->years) && !empty($dataset->students)): ?>
+                                <canvas id="predictionChart" width="400" height="200"></canvas>
+                            <?php else: ?>
+                                <p class="text-center text-red-500">Data tidak tersedia untuk menampilkan grafik.</p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -136,15 +147,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        // Mengambil data tahun dan jumlah mahasiswa dari PHP
         const years = <?php echo json_encode($dataset->years); ?>;
         const students = <?php echo json_encode($dataset->students); ?>;
 
-        // Menambahkan tahun dan prediksi jumlah mahasiswa pada grafik
         const predictedYear = <?php echo $year ?? 0; ?> + 1;
         const predictedStudents = <?php echo $predicted !== null ? round($predicted) : 0; ?>;
 
-        // Menyusun data untuk grafik
         const labels = years.concat(predictedYear);
         const data = students.concat(predictedStudents);
 
@@ -152,12 +160,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const predictionChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: labels, // Label grafik (tahun)
+                labels: labels,
                 datasets: [{
                     label: 'Jumlah Mahasiswa',
-                    data: data, // Data jumlah mahasiswa
-                    borderColor: 'rgb(75, 192, 192)', // Warna garis grafik
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna latar belakang grafik
+                    data: data,
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     fill: true,
                     tension: 0.4
                 }]

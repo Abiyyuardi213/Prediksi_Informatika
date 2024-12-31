@@ -1,5 +1,6 @@
 <nav class="w-64 bg-[#343a40] text-white h-screen fixed overflow-y-auto">
     <div class="flex flex-col items-center py-6">
+        <img src="ITATS.png" alt="ITATS Logo" class="mb-4 w-15 h-15">
         <h5 class="text-xl font-semibold mb-4 text-center">Penerimaan Mahasiswa Baru</h5>
         <ul class="w-full">
             <li class="mb-2">
