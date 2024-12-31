@@ -4,7 +4,6 @@ require_once 'node_dataset.php';
 $dataset = new Dataset();
 $dataset->loadData();
 
-// Prediksi untuk tahun yang akan datang
 $predictions = $dataset->predictMultipleYears(end($dataset->years), 5);
 ?>
 
@@ -40,15 +39,12 @@ $predictions = $dataset->predictMultipleYears(end($dataset->years), 5);
     </div>
 
     <script>
-        // Mengambil data tahun dan jumlah mahasiswa dari PHP
         const years = <?php echo json_encode($dataset->years); ?>;
         const students = <?php echo json_encode($dataset->students); ?>;
 
-        // Menambahkan tahun dan prediksi jumlah mahasiswa pada grafik
         const predictedYears = <?php echo json_encode(array_column($predictions, 'year')); ?>;
         const predictedStudents = <?php echo json_encode(array_column($predictions, 'students')); ?>;
 
-        // Gabungkan data asli dan prediksi
         const allYears = years.concat(predictedYears);
         const allStudents = students.concat(predictedStudents);
 
@@ -56,12 +52,12 @@ $predictions = $dataset->predictMultipleYears(end($dataset->years), 5);
         const developmentChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: allYears, // Label grafik (tahun)
+                labels: allYears,
                 datasets: [{
                     label: 'Jumlah Mahasiswa',
-                    data: allStudents, // Data jumlah mahasiswa
-                    borderColor: 'rgb(75, 192, 192)', // Warna garis grafik
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna latar belakang grafik
+                    data: allStudents,
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     fill: true,
                     tension: 0.4
                 }]

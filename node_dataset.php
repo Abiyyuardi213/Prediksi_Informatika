@@ -37,7 +37,7 @@ class Dataset {
     public function addData($year, $students) {
         $this->years[] = $year;
         $this->students[] = $students;
-        $this->saveData(); // Save data to dataset.json after adding new data
+        $this->saveData();
     }
 
     public function getData() {
@@ -54,7 +54,7 @@ class Dataset {
     public function predict($yearToPredict) {
         $n = count($this->years);
         if ($n == 0) {
-            return 0; // Avoid division by zero
+            return 0;
         }
     
         $meanX = array_sum($this->years) / $n;
@@ -68,7 +68,7 @@ class Dataset {
         }
     
         if ($denominator == 0) {
-            return $meanY; // Avoid division by zero
+            return $meanY;
         }
     
         $b = $numerator / $denominator;
